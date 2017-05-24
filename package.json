@@ -1,5 +1,5 @@
 {
-  "name": "sonarqube-scanner",
+  "name": "sonarqube-scanner-node",
   "version": "0.0.1",
   "description": "sonarqube-scanner npm package",
   "main": "src/index.js",
@@ -7,14 +7,16 @@
     "install": "node src/downloadSonarScanner.js"
   },
   "bin": {
-    "sonarqube-scanner": "./src/index.js"
+    "sonarqube-scanner-node": "./src/index.js"
   },
   "keywords": [
     "sonar",
     "sonarqube",
     "sonarqube-scanner",
     "sonar-scanner-cli",
-    "sonar-scanner"
+    "sonar-scanner",
+    "sonar-scanner-node",
+    "sonar-scanner-npm"
   ],
   "license": "MIT",
   "dependencies": {
