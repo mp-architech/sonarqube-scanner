@@ -7,4 +7,4 @@ const config = require('./config');
 const args = process.argv.slice(2);
 
 log(`Executing sonarqube-scanner ${config.sonarqubeScannerExecutable}`);
-execute(config.sonarqubeScannerExecutable, args);
+execute(config.sonarqubeScannerExecutable, args, {stdio:[0,1,2]});
