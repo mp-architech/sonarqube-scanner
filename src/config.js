@@ -15,7 +15,8 @@ const config = {
     'bin',
     'sonar-scanner',
     platform.isWin ? '.bat' : ''
-  )
+  ),
+  sonarqubeAccessTokenFile: 'sonar.login'
 };
 
 module.exports = config;
