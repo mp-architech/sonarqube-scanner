@@ -10,7 +10,7 @@ const args = process.argv.slice(2);
 
 if (fs.existsSync(config.sonarqubeAccessTokenFile)) {
   log(`Reading token from ${config.sonarqubeAccessTokenFile}`);
-  const token = fs.readFileSync(config.sonarqubeAccessTokenFile);
+  const token = fs.readFileSync(config.sonarqubeAccessTokenFile).toString().replace('\n','');
   args.push(`-Dsonar.login=${token}`);
 }
 
