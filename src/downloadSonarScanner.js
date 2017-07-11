@@ -5,18 +5,30 @@ var log = require('fancy-log');
 var mkdirs = require('mkdirp').sync;
 var config = require('./config');
 
-const downloadSonarScanner = () => {
-  const downloadUrl = `${config.sonarqubeScannerBaseUrl}/${config.sonarqubeScannerFile}`;
-  log(`Checking local sonar-scanner:`);
+const isJavaInstalled = () => {
   try {
-    fs.accessSync(config.installPath, fs.F_OK);
+    const result = require('child_process').spawnSync('java', ['-version']).stderr.toString();
+    return new RegExp('java version ".*"').test(result);
+  } catch(err){
+    return false;
+  }
+};
+
+const downloadSonarScanner = () => {
+  const hasJava = isJavaInstalled();
+  const downloadUrl = hasJava ? config.sonarqubeScannerUrl : config.sonarqubeScannerWithJreUrl;
+  try {
+    fs.accessSync(config.sonarqubeScannerExecutable, fs.F_OK);
     log('Local sonar-scanner exists...skipping download.');
   } catch (e) {
-    log(`Downloading sonar-scanner @ ${downloadUrl}...`);
+    log(`Downloading sonar-scanner:${config.sonarqubeScannerVersion} - ${downloadUrl}...`);
     mkdirs(config.installPath);
     log(`installPath: ${config.installPath}`);
     download(downloadUrl, config.installPath, {extract: true})
       .then(() => {
+        if(!hasJava) {
+          fs.renameSync(config.somarqubeWithJreFolder, config.somarqubeFolder);
+        }
         log('sonar-scanner download complete');
       })
       .catch((err) => {
