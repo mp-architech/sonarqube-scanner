@@ -8,7 +8,7 @@ var config = require('./config');
 const isJavaInstalled = () => {
   try {
     const result = require('child_process').spawnSync('java', ['-version']).stderr.toString();
-    return new RegExp('java version ".*"').test(result);
+    return new RegExp('version ".*"').test(result);
   } catch(err){
     return false;
   }
