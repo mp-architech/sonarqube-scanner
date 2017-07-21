@@ -8,7 +8,7 @@ const SONAR_SCANNER_CLI_WITH_JRE_FOLDER = `${SONAR_SCANNER_CLI_FOLDER}-${platfor
 const SONAR_SCANNER_URL = `${SONAR_SCANNER_BASE_URL}/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}.zip`;
 const SONAR_SCANNER_WITH_JRE_URL = `${SONAR_SCANNER_BASE_URL}/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-${platform.name}.zip`;
 const SONAR_SCANNER_CLI_INSTALL_PATH = path.join(__dirname, '..', 'dist');
-
+const SONAR_EXECUTABLE = `sonar-scanner${platform.isWin ? '.bat' : ''}`;
 const config = {
   sonarqubeScannerVersion: SONAR_SCANNER_CLI_VERSION,
   sonarqubeScannerUrl: SONAR_SCANNER_URL,
@@ -20,8 +20,7 @@ const config = {
     SONAR_SCANNER_CLI_INSTALL_PATH,
     SONAR_SCANNER_CLI_FOLDER,
     'bin',
-    'sonar-scanner',
-    platform.isWin ? '.bat' : ''
+    SONAR_EXECUTABLE
   ),
   sonarqubeAccessTokenFile: 'sonar.login'
 };
