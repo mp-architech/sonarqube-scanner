@@ -1,6 +1,6 @@
 {
   "name": "sonarqube-scanner-node",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "sonarqube-scanner npm package",
   "main": "src/index.js",
   "repository": {
@@ -8,7 +8,8 @@
     "url": "https://github.com/mp-architech/sonarqube-scanner"
   },
   "scripts": {
-    "install": "node src/downloadSonarScanner.js"
+    "install": "node src/downloadSonarScanner.js",
+    "prepack": "rm -f *.tgz; rm -rf dist"
   },
   "bin": {
     "sonarqube-scanner-node": "./src/index.js"
