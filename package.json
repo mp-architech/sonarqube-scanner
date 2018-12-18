@@ -1,6 +1,6 @@
 {
   "name": "sonarqube-scanner-node",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "sonarqube-scanner npm package",
   "main": "src/index.js",
   "repository": {
