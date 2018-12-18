@@ -1,8 +1,12 @@
-var path = require('path');
-var platform = require('./platform');
+const path = require('path');
+const platform = require('./platform');
 
-const SONAR_SCANNER_CLI_VERSION = '3.2.0.1227';
-const SONAR_SCANNER_BASE_URL = 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli';
+const SONAR_SCANNER_CLI_VERSION = process.env.SONAR_SCANNER_CLI_VERSION  ||
+    process.env.npm_config_sonar_scanner_cli_version ||
+    '3.2.0.1227';
+const SONAR_SCANNER_BASE_URL = process.env.SONAR_SCANNER_BASE_URL  ||
+    process.env.npm_config_sonar_scanner_base_url ||
+    'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli';
 const SONAR_SCANNER_CLI_FOLDER = `sonar-scanner-${SONAR_SCANNER_CLI_VERSION}`;
 const SONAR_SCANNER_CLI_WITH_JRE_FOLDER = `${SONAR_SCANNER_CLI_FOLDER}-${platform.name}`;
 const SONAR_SCANNER_URL = `${SONAR_SCANNER_BASE_URL}/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}.zip`;
