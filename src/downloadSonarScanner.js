@@ -1,9 +1,9 @@
-var fs = require('fs');
-var path = require('path');
-var download = require('download');
-var log = require('fancy-log');
-var mkdirs = require('mkdirp').sync;
-var config = require('./config');
+const fs = require('fs');
+const request = require('superagent');
+const admZip = require('adm-zip');
+const log = require('fancy-log');
+const mkdirs = require('mkdirp').sync;
+const config = require('./config');
 
 const isJavaInstalled = () => {
   try {
@@ -19,23 +19,26 @@ const downloadSonarScanner = () => {
   const downloadUrl = hasJava ? config.sonarqubeScannerUrl : config.sonarqubeScannerWithJreUrl;
   try {
     fs.accessSync(config.sonarqubeScannerExecutable, fs.F_OK);
-    log('Local sonar-scanner exists...skipping download.');
+    log.info('Local sonar-scanner exists...skipping download.');
   } catch (e) {
-    log(`Downloading sonar-scanner:${config.sonarqubeScannerVersion} - ${downloadUrl}...`);
+    log.info(`Downloading sonar-scanner:${config.sonarqubeScannerVersion} - ${downloadUrl}...`);
     mkdirs(config.installPath);
-    log(`installPath: ${config.installPath}`);
-    download(downloadUrl, config.installPath, {extract: true})
-      .then(() => {
-        if(!hasJava) {
-          fs.renameSync(config.somarqubeWithJreFolder, config.somarqubeFolder);
-        }
-        log('sonar-scanner download complete');
-      })
-      .catch((err) => {
+    log.info(`installPath: ${config.installPath}`);
+    request
+        .get(downloadUrl)
+        .on('error', (err) => {
           log.error(`Error downloading sonar-scanner: ${err.message}`);
           throw err;
-        }
-      );
+        })
+        .pipe(fs.createWriteStream(`${config.installPath}/${config.sonarqubeScannerZip}`))
+        .on('finish', () => {
+            const zip = new admZip(`${config.installPath}/${config.sonarqubeScannerZip}`);
+            zip.extractAllTo(config.installPath, false, true);
+            if(!hasJava) {
+                fs.renameSync(config.somarqubeWithJreFolder, config.somarqubeFolder);
+            }
+            log.info('sonar-scanner download complete');
+        });
   }
 };
 
